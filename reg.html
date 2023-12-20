@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stle.css">
+    <title>Page</title>
+</head>
+<body>
+        <link rel="stylesheet" href="styles.css">
+        <div class="topnav">
+            <div class="nav-padding">
+                <span class="nav-ham" id="nav-ham" onclick="toggleSidebar()">&#9776;</span>
+                <a href="{% url 'index' %}" title="Forms">
+                    <img src="site-icon.png" alt="Google Forms Icon(CLONE)" class="navbar-icon form-icon">
+                </a>
+                <span class="nav-text" title="Forms"><a href="{% url 'index' %}" class="nav-link">Forms CLONE</a></span>
+                <a href="{% url 'logout' %}">
+                    <img src="logout.png" alt="Logout Icon" class="navbar-icon float-right logout-icon" title="Logout">
+                </a>
+            </div>
+        </div>
+    <center>
+    <div class="page">
+        <center>    
+            <img class="profile-img" id="profileImage" src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png" alt="Фото профиля" onclick="toggleImageURLContainer(event)">
+            <br>
+            
+            <div id="imageURLContainer">
+              <label for="imageURL">Вставьте нужную ссылку на фотографию: </label>
+              <input class="link-input" type="text" id="imageURL" placeholder="Вставьте ссылку">
+              <button onclick="changeProfileImage()">Изменить фото</button>
+            </div>
+            
+            <br>
+            <br>
+            <div class="info">
+                <form action="information">
+                    <label for="nick">Введите ваш новый ник:</label>
+                    <input  name="nick" type="text" >
+                    <br>
+                    <br>
+                    <label for="username">Введите ваше Имя:</label>
+                    <input  name="username" type="text">
+                    <br>
+                    <br>
+                    <label for="sex">Укажите ваш пол:</label>
+                    <select name="sex" id="">
+                        <option value="Male">Мужской</option>
+                        <option value="Female">Женский</option>
+                    </select>
+                    <br>
+                    <br>
+                    <br>
+                    <label for="date">Укажите вашу дату рождение:</label>
+                    <input  name="date" type="date">
+                    <br>
+                    <br>
+                    <label for="">Укажите вашу страну:</label>
+                    <input style="margin-bottom: 20px;"  type="text">
+                </form>
+                <input type="reset" value="Сбросить">   
+                <input type="submit" value="Применить">
+                </div>
+        </center>
+    </div>
+</center>
+</body>
+<script>
+    function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+
+          // Ссылка на изображение
+          var img = document.getElementById('file');
+          img.src = theFile.name;
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+</script>
+
+<script>
+    function toggleImageURLContainer(event) {
+      event.stopPropagation(); // Остановка всплытия события
+      var imageURLContainer = document.getElementById("imageURLContainer");
+      imageURLContainer.style.display = (imageURLContainer.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function changeProfileImage() {
+      var imageUrl = document.getElementById("imageURL").value;
+      var profileImage = document.getElementById("profileImage");
+      
+      if (imageUrl) {
+        profileImage.src = imageUrl;
+        // Optional: You can hide the input field and button after changing the image
+        document.getElementById("imageURLContainer").style.display = 'none';
+      } else {
+        alert("Введите ссылку на новое фото!");
+      }
+    }
+  </script>
+
+
+
+</html>
